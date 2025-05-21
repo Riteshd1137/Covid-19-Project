@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>COVID Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <header>
+        <h1>COVID-19 Dashboard</h1>
+    </header>
+
+    <section class="filter-section">
+        <form method="get" action="/">
+            <label for="country">Select Country:</label>
+            <select id="country" name="country" onchange="this.form.submit()">
+                <option value="">All Countries</option>
+                {% for country in country_list %}
+                    <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>{{ country }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </section>
+
+    <section class="totals-section">
+        <div class="total-card confirmed">
+            <h3>Total Confirmed</h3>
+            <p>{{ total_confirmed }}</p>
+        </div>
+        <div class="total-card deaths">
+            <h3>Total Deaths</h3>
+            <p>{{ total_deaths }}</p>
+        </div>
+        <div class="total-card recovered">
+            <h3>Total Recovered</h3>
+            <p>{{ total_recovered }}</p>
+        </div>
+    </section>
+
+    <section class="plots-grid">
+        <!-- Line plots side by side -->
+        <div class="row">
+            <div class="plot-container">
+                <h3>Confirmed Cases Over Time</h3>
+                <img src="{{ plots['confirmed'] }}" alt="Confirmed Cases Plot" />
+            </div>
+            <div class="plot-container">
+                <h3>Deaths Over Time</h3>
+                <img src="{{ plots['deaths'] }}" alt="Deaths Plot" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="plot-container">
+                <h3>Recovered Over Time</h3>
+                <img src="{{ plots['recovered'] }}" alt="Recovered Plot" />
+            </div>
+            <div class="plot-container">
+                <h3>Active Cases Over Time</h3>
+                <img src="{{ plots['active'] }}" alt="Active Cases Plot" />
+            </div>
+        </div>
+
+        <!-- Bar and Pie plots side by side -->
+        <div class="row">
+            <div class="plot-container">
+                <h3>Confirmed Cases by Country (Bar Plot)</h3>
+                <img src="{{ plots['bar'] }}" alt="Bar Plot" />
+            </div>
+            <div class="plot-container">
+                <h3>Active Cases Distribution (Pie Chart)</h3>
+                <img src="{{ plots['pie'] }}" alt="Pie Chart" />
+            </div>
+        </div>
+    </section>
+</body>
+</html>
